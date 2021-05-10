@@ -1,0 +1,30 @@
+{
+  "name": "coin-info",
+  "version": "1.0.0",
+  "description": "React app which provides basic info about cryptocurrencies",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "eslint": "^7.26.0",
+    "eslint-plugin-react": "^7.23.2",
+    "express": "^4.17.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobo-kovacevic/coin-info.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bobo-kovacevic/coin-info/issues"
+  },
+  "homepage": "https://github.com/bobo-kovacevic/coin-info#readme"
+}
