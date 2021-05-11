@@ -1,4 +1,5 @@
 const express = require('express');
+const queryString = require('querystring');
 const axios = require('axios');
 const API_KEY = require('./secret');
 const PORT = process.env.PORT || 3001;
@@ -17,13 +18,23 @@ axios.interceptors.request.use(req => {
   return req;
 });
 
-app.get('/api/listings', async (_, res) => {
+app.get('/api/listings', async (req, res, next) => {
   try {
     const result = await axios
-      .get(`${API_URL}/cryptocurrency/listings/latest`);
+      .get(`${API_URL}/cryptocurrency/listings/latest?${queryString.stringify(req.query)}`);
     res.json(result.data);
   } catch (err) {
-    console.log(err);
+    next(err);
+  }
+});
+
+app.get('/api/info/:id', async (req, res, next) => {
+  try {
+    const result = await axios
+      .get(`${API_URL}/cryptocurrency/info?id=${req.params.id}`);
+    res.json(result.data);
+  } catch (err) {
+    next(err);
   }
 });
 
