@@ -1,42 +1,66 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Image } from 'semantic-ui-react';
 import styled from 'styled-components';
-import { CURRENCY, COLOR_ERROR, COLOR_OK } from '../settings';
+import { COLOR_ERROR, COLOR_OK } from '../settings';
 import Periods, { periods } from './periods';
+import { defaultCurrency } from './currency-selector';
 
 const Value = styled.span`
   color: ${(props) => props.color};
   margin-right: 10px;
 `;
 
-const Asset = ({ info }) => {
+let currentCurrency;
+
+const Asset = ({ info, currency }) => {
   const defaultPeriod = periods[1];
   const [currentPeriod, setCurrentPeriod] = useState(defaultPeriod);
+  currentCurrency = currency || defaultCurrency.value;
 
   const displayAssetValue = (period) => {
     const periodPropertyName = `percent_change_${period}`;
-    const value = info.quote[CURRENCY][periodPropertyName];
+    const value = info.quote[currentCurrency] && info.quote[currentCurrency][periodPropertyName];
     const color = value < 0 ? COLOR_ERROR : COLOR_OK;
     const durations = period.split('_');
     const duration = durations[durations.length - 1];
 
+    if (value) {
+      return (
+        <>
+          <Card.Description>
+            {Math.round(info.quote[currentCurrency].price * 100) / 100}
+            {' '}
+            {currency}
+          </Card.Description>
+          <Card.Description>
+            <Value color={color}>
+              {Math.round(info.quote[currentCurrency][periodPropertyName] * 100) / 100}
+              %
+            </Value>
+            <span>
+              [
+              {duration}
+              ]
+            </span>
+          </Card.Description>
+        </>
+      );
+    }
+
     return (
-      <Card.Content>
-        <Value color={color}>
-          {info.quote[CURRENCY][periodPropertyName]}
-          %
-        </Value>
-        <span>
-          [
-          {duration}
-          ]
-        </span>
-      </Card.Content>
+      <>
+        <Card.Description>
+          <span>&nbsp;</span>
+        </Card.Description>
+        <Card.Description>
+          <span>&nbsp;</span>
+        </Card.Description>
+      </>
     );
   };
 
-  const getImageUrl = (assetId) => `https://s2.coinmarketcap.com/static/img/coins/64x64/${assetId}.png`;
+  const getImageUrl = (assetId) => `https://s2.coinmarketcap.com/static/img/coins/32x32/${assetId}.png`;
 
   const handlePeriodSelected = (period) => {
     setCurrentPeriod(period);
@@ -66,11 +90,12 @@ Asset.propTypes = {
     name: PropTypes.string.isRequired,
     symbol: PropTypes.string.isRequired,
     quote: PropTypes.shape({
-      [CURRENCY]: PropTypes.shape({
+      [currentCurrency]: PropTypes.shape({
         percent_change_24h: PropTypes.number.isRequired,
       }),
     }),
   }).isRequired,
+  currency: PropTypes.string.isRequired,
 };
 
 export default Asset;
