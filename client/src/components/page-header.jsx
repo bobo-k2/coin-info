@@ -9,7 +9,7 @@ const PageHeader = ({ onCurrencyChanged, isLoading }) => {
   };
 
   return (
-    <Segment inverted>
+    <Segment inverted style={{ borderRadius: 0 }}>
       <Menu inverted size="large">
         <Container>
           <Menu.Item
