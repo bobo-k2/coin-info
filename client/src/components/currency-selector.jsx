@@ -15,6 +15,11 @@ const currencies = [
     value: 'EUR',
     icon: 'euro',
   },
+  {
+    key: 'HRK',
+    text: 'HRK',
+    value: 'HRK',
+  },
 ];
 
 export const defaultCurrency = currencies[0];

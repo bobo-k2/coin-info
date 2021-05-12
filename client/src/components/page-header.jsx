@@ -15,12 +15,18 @@ const PageHeader = ({ onCurrencyChanged, isLoading }) => {
           <Menu.Item
             header
             as="h2"
+            style={{
+              textAlign: 'left',
+              paddingLeft: 0,
+            }}
           >
             CoinInfo
           </Menu.Item>
-          <Menu.Item position="right">
-            <CurrencySelector onCurrencyChanged={handleCurrencyChanged} isLoading={isLoading} />
-          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              <CurrencySelector onCurrencyChanged={handleCurrencyChanged} isLoading={isLoading} />
+            </Menu.Item>
+          </Menu.Menu>
         </Container>
       </Menu>
     </Segment>

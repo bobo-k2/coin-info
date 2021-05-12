@@ -67,7 +67,7 @@ const Asset = ({ info, currency }) => {
   };
 
   return (
-    <Card fluid>
+    <Card>
       <Card.Content>
         <Image
           floated="left"

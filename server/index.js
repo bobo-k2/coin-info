@@ -1,10 +1,14 @@
 const express = require('express');
 const queryString = require('querystring');
+const path = require('path');
 const axios = require('axios');
 const API_KEY = require('./secret');
 const PORT = process.env.PORT || 3001;
 const API_URL = 'https://pro-api.coinmarketcap.com/v1';
 const app = express();
+
+// Have Node serve the files for React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 axios.interceptors.request.use(req => {
   req.headers = {
@@ -36,6 +40,10 @@ app.get('/api/info/:id', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
 app.listen(PORT, () => {

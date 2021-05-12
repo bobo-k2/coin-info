@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
-export const periods = ['1h', '24h', '7d', '30d', '60d', '90d'];
+export const periods = ['1h', '24h', '7d', '30d', '60d'];
 
 const Periods = ({ selectedPeriod, onPeriodSelected }) => {
   const renderButtons = () => periods.map((period) => (
@@ -16,7 +16,7 @@ const Periods = ({ selectedPeriod, onPeriodSelected }) => {
   ));
 
   return (
-    <Button.Group size="tiny">
+    <Button.Group size="mini">
       {renderButtons()}
     </Button.Group>
   );
