@@ -1,0 +1,17 @@
+<div class="header">
+  <h2>CoinInfo</h2>
+</div>
+<div class="content">
+  <div class="card-container" *ngFor="let asset of data">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{asset.name}}</mat-card-title>
+        <mat-card-subtitle>{{asset.symbol}}</mat-card-subtitle>
+        <img mat-card-sm-image src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{asset.id}}.png">
+      </mat-card-header>
+      <mat-card-content>
+        
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
