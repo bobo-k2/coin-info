@@ -13,16 +13,20 @@ const HomePage = () => {
   const [currency, setCurrency] = useState(defaultCurrency.value);
   const [isLoading, setIsLoading] = useState(false);
   const [lastError, setLastError] = useState(null);
-  const [pagesLoaded] = useState(1);
+  const [pagesLoaded, setPagesLoaded] = useState(1);
 
-  const getData = async (c) => {
+  const nextPageStart = () => pagesLoaded * PAGE_SIZE;
+
+  const getData = async () => {
     setIsLoading(true);
     setLastError(null);
 
     try {
-      const response = await fetch(`/api/listings/?start=${pagesLoaded * PAGE_SIZE}&limit=${PAGE_SIZE}&convert=${c}`);
+      const url = `/api/listings/?start=${nextPageStart()}&limit=${PAGE_SIZE}&convert=${currency}`;
+      const response = await fetch(url);
       const body = await response.json();
-      setData(body.data);
+
+      setData(data.concat(body.data));
     } catch (err) {
       setLastError(err);
     }
@@ -31,7 +35,11 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getData(currency);
+    getData();
+  }, [pagesLoaded, currency]);
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const renderAssets = () => data.map(
@@ -46,7 +54,12 @@ const HomePage = () => {
 
   const handleCurrencyChanged = async (c) => {
     setCurrency(c);
-    await getData(c);
+    setData([]);
+    setPagesLoaded(1);
+  };
+
+  const handleLoadMoreAssets = async () => {
+    setPagesLoaded(pagesLoaded + 1);
   };
 
   return (
@@ -61,7 +74,7 @@ const HomePage = () => {
           {renderAssets()}
         </Card.Group>
         <Card.Group centered>
-          <Button basic loading={isLoading}>Load more</Button>
+          <Button basic loading={isLoading} onClick={handleLoadMoreAssets}>Load more</Button>
         </Card.Group>
       </Container>
     </>
