@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container, Card, Message, Button,
 } from 'semantic-ui-react';
@@ -13,9 +13,9 @@ const HomePage = () => {
   const [currency, setCurrency] = useState(defaultCurrency.value);
   const [isLoading, setIsLoading] = useState(false);
   const [lastError, setLastError] = useState(null);
-  const [pagesLoaded, setPagesLoaded] = useState(1);
+  const [pagesLoaded, setPagesLoaded] = useState(0);
 
-  const nextPageStart = () => pagesLoaded * PAGE_SIZE;
+  const nextPageStart = () => pagesLoaded * PAGE_SIZE + 1;
 
   const getData = async () => {
     setIsLoading(true);
@@ -37,10 +37,6 @@ const HomePage = () => {
   useEffect(() => {
     getData();
   }, [pagesLoaded, currency]);
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const renderAssets = () => data.map(
     (asset) => (
@@ -65,7 +61,7 @@ const HomePage = () => {
   return (
     <>
       <PageHeader onCurrencyChanged={handleCurrencyChanged} isLoading={isLoading} />
-      <Container>
+      <Container style={{ marginBottom: 20 }}>
         <Message negative hidden={lastError === null}>
           <Message.Header>An error occured while fetching data from the server.</Message.Header>
           <p>{lastError && lastError.message}</p>
